@@ -4,20 +4,26 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-int DECK_SIZE = 52;
-int deck[DECK_SIZE];
+//creates an array of 52 cards
+int deck_size = 52;
+int deck[deck_size];
+
 //a bool value to determine if the winner of a round is found
 bool isWon = false;
 
-/*
-void showHand(player_t player)
-{
-	printf("%s", z);
-	printf("%s", z);
+/* Structure for player so we can keep track of their cards */
+typedef struct player {
+	int id;
+	int card1;
+	int card2;
 }
-*/
 
-void isWinner(player_t player)
+//creates the 3 players for the game
+player player1;
+player player2;
+player player3;
+
+void isWinner(player player)
 {
 	int i;
 	for(i = 0; i < 3; i++)
@@ -35,6 +41,21 @@ void isWinner(player_t player)
 	
 	isWon = true;
 	
+}
+
+//shuffles the deck of cards
+void shuffle(int deck)
+{
+	//resets the size of the deck
+	deck_size = 52;
+	
+	int i, j, temp;
+	for(i = 0; i < 52; i++) {
+		j = i + rand() / (RAND_MAX / (52 - i) + 1);
+		temp = cards[i];
+		cards[i] = cards[j];
+		cards[j] = temp;
+	}
 }
 
 //prints out the content of the deck
@@ -58,7 +79,7 @@ string intToString(int i)
 	}
 }
 
-void getSecondCard(player_t player)
+void getSecondCard(player player)
 {
 	int card2 = getCard();
 	
@@ -110,16 +131,22 @@ void getSecondCard(player_t player)
 	
 }
 
+//puts a card on the bottom of the deck
+void returnCardToDeck(int card) {
+	deck[deck_size] = card;
+	deck_size++;
+}
+
 //returns the top card of the deck and moves each card one space up the array
 int getCard()
 {
 	int card = deck[0];
 	
 	int i;
-	for(i = 0; i < cards_size - 1; i++)
-		cards[i] = cards[i + 1];
+	for(i = 0; i < deck_size - 1; i++)
+		deck[i] = deck[i + 1];
 		
-	cards_size--;
+	deck_size--;
 	return card;
 }
 
