@@ -252,7 +252,7 @@ int main(int argc, char *argv[])
             deck[deckSize++] = j;
     }
 
-    //Create players
+    //Initializes the player attributes
     player1.id = 1;
     player1.card1 = -1;
     player1.card2 = -1;
@@ -275,7 +275,7 @@ int main(int argc, char *argv[])
         printf("ROUND %d\n", (round + 1));
 
         //Initialize semaphore
-        sem_init(&dealerSemaphore, 0, 0);
+        sem_init(&dealerSemaphore, 0, 1);
 
         //Create player threads
         pthread_create(&player1_thread, NULL, &handlePlayers, &player1);
